@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'util.dart';
-import 'theme.dart';
+import 'utils/util.dart';
+import 'utils/theme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -102,4 +102,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
