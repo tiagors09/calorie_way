@@ -5,10 +5,10 @@ import 'package:calorie_way/enums/genders.dart';
 import 'package:calorie_way/widgets/calorie_way_dropdown_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:calorie_way/controllers/personal_data_form_controller.dart';
-import 'package:calorie_way/viewmodel/personal_data_form_view_model.dart';
 
-class PersonalDataForm extends StatelessWidget
-    with PersonalDataFormViewModel, PersonalDataFormController {
+class PersonalDataForm extends StatelessWidget with PersonalDataFormController {
+  final formData = <String, dynamic>{};
+
   PersonalDataForm({super.key});
 
   @override
@@ -17,7 +17,7 @@ class PersonalDataForm extends StatelessWidget
       bottomNavigationBar: Container(
         margin: const EdgeInsets.all(24),
         child: ElevatedButton(
-          onPressed: () => onSubmit(context),
+          onPressed: () => onSubmit(context, formData),
           child: const Text('cadastrar'),
         ),
       ),
@@ -29,7 +29,7 @@ class PersonalDataForm extends StatelessWidget
             Container(
               margin: const EdgeInsets.only(bottom: 12),
               child: TextFormField(
-                onSaved: (value) => weightOnSave(value, weight),
+                onSaved: (value) => weightOnSave(value, formData),
                 validator: weightValidator,
                 decoration: InputDecoration(
                   label: Text(weightLabel),
@@ -41,7 +41,7 @@ class PersonalDataForm extends StatelessWidget
               margin: const EdgeInsets.only(bottom: 12),
               child: TextFormField(
                 validator: heightValidator,
-                onSaved: (value) => heightOnSaved(value, height),
+                onSaved: (value) => heightOnSaved(value, formData),
                 decoration: InputDecoration(
                   label: Text(heightLabel),
                 ),
@@ -62,9 +62,9 @@ class PersonalDataForm extends StatelessWidget
                 title: genderLabel,
                 items: genres,
                 validator: genreValidator,
-                onSaved: (value) => genderOnChanged(value, gender),
+                onSaved: (value) => genderOnChanged(value, formData),
                 initalValue: Genders.masculine,
-                onChanged: (value) => genderOnChanged(value, gender),
+                onChanged: (value) => genderOnChanged(value, formData),
               ),
             ),
             Container(
@@ -73,11 +73,11 @@ class PersonalDataForm extends StatelessWidget
                 title: activityLabel,
                 items: activitiyLevels,
                 validator: activityLevelValidator,
-                onSaved: (value) => activityLevelOnSaved(value, activityLevel),
+                onSaved: (value) => activityLevelOnSaved(value, formData),
                 initalValue: ActivityLevel.sedentary,
                 onChanged: (value) => activityLevelOnChanged(
                   value,
-                  activityLevel,
+                  formData,
                 ),
               ),
             ),
