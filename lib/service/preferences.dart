@@ -10,16 +10,12 @@ abstract class Preferences {
     try {
       sp = await SharedPreferences.getInstance();
 
-      final history = sp.getStringList('history') ?? [];
-
-      final dataJson = jsonDecode(data);
-      dataJson["date"] = DateFormat('dd/MM/yyyy').format(DateTime.now());
-
-      history.add(jsonEncode(dataJson));
+      final history = jsonDecode(data);
+      history["date"] = DateFormat('dd/MM/yyyy').format(DateTime.now());
 
       final response = await Future.wait([
         sp.setString('personal_data', data),
-        sp.setStringList('history', history),
+        sp.setString('history', history),
       ]);
 
       if (response[0] && response[1]) {
