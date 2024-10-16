@@ -2,6 +2,7 @@
   "conventionalCommits.scopes": [
     "lib/utils",
     "lib/views",
-    "lib"
+    "lib",
+    "lib/controllers"
   ]
 }
