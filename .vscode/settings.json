@@ -6,6 +6,7 @@
     "lib/controllers",
     "lib/models",
     "lib/viewmodel",
-    "lib/widgets"
+    "lib/widgets",
+    "lib/enums"
   ]
 }
