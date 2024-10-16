@@ -3,6 +3,8 @@
     "lib/utils",
     "lib/views",
     "lib",
-    "lib/controllers"
+    "lib/controllers",
+    "lib/model",
+    "lib/viewmodel"
   ]
 }
