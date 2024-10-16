@@ -1,5 +1,6 @@
 {
   "conventionalCommits.scopes": [
-    "lib/utils"
+    "lib/utils",
+    "lib/views"
   ]
 }
