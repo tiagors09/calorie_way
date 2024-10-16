@@ -1,3 +1,4 @@
+import 'package:calorie_way/widgets/status.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/routes.dart';
@@ -26,7 +27,7 @@ class HomeView extends StatelessWidget {
           )
         ],
       ),
-      body: const Placeholder(),
+      body: const Status(),
       floatingActionButton: FloatingActionButton(
         onPressed: () =>
             Navigator.of(context).pushNamed(Routes.personalDataForm),
