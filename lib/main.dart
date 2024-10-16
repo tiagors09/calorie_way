@@ -23,12 +23,12 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'CalorieWay',
       theme: theme.light(),
-      home: const HomeView(),
       routes: {
         Routes.home: (ctx) => const HomeView(),
         Routes.history: (ctx) => const HistoryView(),
         Routes.personalDataForm: (ctx) => const PersonalDataFormView(),
       },
+      initialRoute: Routes.home,
     );
   }
 }
