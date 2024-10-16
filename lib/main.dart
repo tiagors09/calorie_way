@@ -1,8 +1,8 @@
-import 'package:calorie_way/views/history.dart';
-import 'package:calorie_way/views/personal_data_form.dart';
+import 'package:calorie_way/views/personal_data_form_view.dart';
 import 'package:flutter/material.dart';
 import 'utils/routes.dart';
-import 'views/home.dart';
+import 'views/history_view.dart';
+import 'views/home_view.dart';
 import 'utils/util.dart';
 import 'utils/theme.dart';
 
@@ -23,11 +23,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'CalorieWay',
       theme: theme.light(),
-      home: const Home(),
+      home: const HomeView(),
       routes: {
-        Routes.home: (ctx) => const Home(),
-        Routes.history: (ctx) => const History(),
-        Routes.personalDataForm: (ctx) => const PersonalDataForm(),
+        Routes.home: (ctx) => const HomeView(),
+        Routes.history: (ctx) => const HistoryView(),
+        Routes.personalDataForm: (ctx) => const PersonalDataFormView(),
       },
     );
   }
