@@ -1,7 +1,11 @@
 import 'package:calorie_way/enums/activity_level.dart';
+import 'package:calorie_way/service/preferences.dart';
+import 'package:calorie_way/utils/calories_calculator.dart';
+import 'package:calorie_way/utils/tmb_calculator.dart';
 import 'package:flutter/material.dart';
 
 import '../enums/genders.dart';
+import '../enums/goals.dart';
 
 mixin PersonalDataFormController {
   final formKey = GlobalKey<FormState>();
@@ -10,6 +14,7 @@ mixin PersonalDataFormController {
   final String ageLabel = 'idade';
   final String genderLabel = 'gênero';
   final String activityLabel = 'nível de atividade';
+  final String goalsLabel = 'objetivo';
 
   String? weightValidator(String? value) {
     if (value!.trim().isEmpty) {
@@ -99,6 +104,26 @@ mixin PersonalDataFormController {
     return null;
   }
 
+  String? goalValidator(Goals? value) {
+    if (!Goals.values.contains(value!)) {
+      return 'Selecione um objetivo válido';
+    }
+
+    return null;
+  }
+
+  void goalOnChanged(
+    Goals? value,
+    Map<String, dynamic> formData,
+  ) =>
+      formData['goals'] = value!;
+
+  void goalOnSaved(
+    Goals? value,
+    Map<String, dynamic> formData,
+  ) =>
+      formData['goals'] = value!;
+
   void genderOnChanged(
     Genders? value,
     Map<String, dynamic> formData,
@@ -136,8 +161,31 @@ mixin PersonalDataFormController {
 
     formKey.currentState!.save();
 
-    // salvar no shared_preferences
-    print(formData);
+    dynamic Function(double, int, int) tmbCalc =
+        formData['gender'] == Genders.masculine
+            ? TMBCalculator.tmbCalcMac
+            : TMBCalculator.tmbCalcFem;
+
+    final tmb = tmbCalc(
+      formData['weight'],
+      formData['height'],
+      formData['age'],
+    );
+
+    final dailyCalories = CaloriesCalculator.dailyCalories(
+      tmb,
+      (formData['activityLevel'] as ActivityLevel).rate,
+    );
+
+    final caloriesToLoss = CaloriesCalculator.caloriesToLoss(dailyCalories);
+    final caloriesToGain = CaloriesCalculator.caloriesToGain(dailyCalories);
+
+    formData['caloriesToLoss'] = caloriesToLoss;
+    formData['caloriesToGain'] = caloriesToGain;
+
+    Preferences.savePersonalData(formData.toString()).then(
+      (value) => print(value),
+    );
 
     Navigator.of(context).pop();
   }
@@ -156,6 +204,15 @@ mixin PersonalDataFormController {
         (level) => DropdownMenuItem<ActivityLevel>(
           value: level,
           child: Text(level.value),
+        ),
+      )
+      .toList();
+
+  get goals => Goals.values
+      .map(
+        (goal) => DropdownMenuItem<Goals>(
+          value: goal,
+          child: Text(goal.value),
         ),
       )
       .toList();
