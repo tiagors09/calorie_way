@@ -7,6 +7,7 @@
     "lib/models",
     "lib/viewmodel",
     "lib/widgets",
-    "lib/enums"
+    "lib/enums",
+    "lib/services"
   ]
 }
