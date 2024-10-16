@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
-class Home extends StatelessWidget {
-  const Home({super.key});
+import '../utils/routes.dart';
+
+class HomeView extends StatelessWidget {
+  const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,7 @@ class Home extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () => Navigator.of(context).pushNamed(Routes.history),
             icon: Icon(
               Icons.list,
               color: Theme.of(context).colorScheme.onPrimary,
@@ -26,7 +28,8 @@ class Home extends StatelessWidget {
       ),
       body: const Placeholder(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () =>
+            Navigator.of(context).pushNamed(Routes.personalDataForm),
         child: Icon(
           Icons.add,
           color: Theme.of(context).colorScheme.onPrimary,
