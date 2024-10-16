@@ -1,9 +1,7 @@
-import 'package:calorie_way/controllers/personal_data_form_controller.dart';
-import 'package:calorie_way/viewmodel/personal_data_form_view_model.dart';
+import 'package:calorie_way/widgets/personal_data_form.dart';
 import 'package:flutter/material.dart';
 
-class PersonalDataFormView extends StatelessWidget
-    with PersonalDataFormViewModel, PersonalDataFormController {
+class PersonalDataFormView extends StatelessWidget {
   const PersonalDataFormView({super.key});
 
   @override
@@ -21,7 +19,7 @@ class PersonalDataFormView extends StatelessWidget
         ),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
-      body: const Placeholder(),
+      body: PersonalDataForm(),
     );
   }
 }
