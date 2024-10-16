@@ -1,5 +1,5 @@
 enum Goals {
-  weightLoss('erda de Peso'),
+  weightLoss('Perda de Peso'),
   weightGain('Ganho de Peso');
 
   final String value;
