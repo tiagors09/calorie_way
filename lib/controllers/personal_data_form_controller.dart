@@ -2,7 +2,6 @@ import 'package:calorie_way/enums/activity_level.dart';
 import 'package:flutter/material.dart';
 
 import '../enums/genders.dart';
-import '../utils/routes.dart';
 
 mixin PersonalDataFormController {
   final formKey = GlobalKey<FormState>();
@@ -35,8 +34,8 @@ mixin PersonalDataFormController {
     return null;
   }
 
-  void weightOnSave(String? value, double weight) =>
-      weight = double.parse(value!);
+  void weightOnSave(String? value, Map<String, dynamic> formData) =>
+      formData['weight'] = double.parse(value!);
 
   String? heightValidator(String? value) {
     if (value!.trim().isEmpty) {
@@ -61,7 +60,11 @@ mixin PersonalDataFormController {
     return null;
   }
 
-  void heightOnSaved(String? value, int height) => height = int.parse(value!);
+  void heightOnSaved(
+    String? value,
+    Map<String, dynamic> formData,
+  ) =>
+      formData['height'] = int.parse(value!);
 
   String? ageValidator(String? value) {
     if (value == null || value.trim().isEmpty) {
@@ -83,7 +86,11 @@ mixin PersonalDataFormController {
     return null;
   }
 
-  void ageOnSaved(String? value, int age) => age = int.parse(value!);
+  void ageOnSaved(
+    String? value,
+    Map<String, dynamic> formData,
+  ) =>
+      formData['age'] = int.parse(value!);
 
   String? genreValidator(Genders? value) {
     if (value != Genders.masculine && value != Genders.feminine) {
@@ -92,9 +99,17 @@ mixin PersonalDataFormController {
     return null;
   }
 
-  void genderOnChanged(Genders? value, Genders gender) => gender = value!;
+  void genderOnChanged(
+    Genders? value,
+    Map<String, dynamic> formData,
+  ) =>
+      formData['gender'] = value!;
 
-  void genderOnSaved(Genders? value, Genders gender) => gender = value!;
+  void genderOnSaved(
+    Genders? value,
+    Map<String, dynamic> formData,
+  ) =>
+      formData['gender'] = value!;
 
   String? activityLevelValidator(ActivityLevel? value) {
     if (!ActivityLevel.values.contains(value!)) {
@@ -106,26 +121,25 @@ mixin PersonalDataFormController {
 
   void activityLevelOnChanged(
     ActivityLevel? value,
-    ActivityLevel activityLevel,
+    Map<String, dynamic> formData,
   ) =>
-      activityLevel = value!;
+      formData['activityLevel'] = value!;
 
   void activityLevelOnSaved(
     ActivityLevel? value,
-    ActivityLevel activityLevel,
+    Map<String, dynamic> formData,
   ) =>
-      activityLevel = value!;
+      formData['activityLevel'] = value!;
 
-  void onSubmit(BuildContext context) {
+  void onSubmit(BuildContext context, Map<String, dynamic> formData) {
     if (!formKey.currentState!.validate()) return;
 
     formKey.currentState!.save();
 
     // salvar no shared_preferences
+    print(formData);
 
-    Navigator.of(context).pushReplacementNamed(
-      Routes.home,
-    );
+    Navigator.of(context).pop();
   }
 
   get genres => Genders.values
