@@ -5,6 +5,7 @@
     "lib",
     "lib/controllers",
     "lib/models",
-    "lib/viewmodel"
+    "lib/viewmodel",
+    "lib/widgets"
   ]
 }
