@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:calorie_way/enums/activity_level.dart';
 import 'package:calorie_way/service/preferences.dart';
 import 'package:calorie_way/utils/calories_calculator.dart';
@@ -6,6 +8,7 @@ import 'package:flutter/material.dart';
 
 import '../enums/genders.dart';
 import '../enums/goals.dart';
+import '../utils/routes.dart';
 
 mixin PersonalDataFormController {
   final formKey = GlobalKey<FormState>();
@@ -40,7 +43,7 @@ mixin PersonalDataFormController {
   }
 
   void weightOnSave(String? value, Map<String, dynamic> formData) =>
-      formData['weight'] = double.parse(value!);
+      formData["weight"] = double.parse(value!);
 
   String? heightValidator(String? value) {
     if (value!.trim().isEmpty) {
@@ -69,7 +72,7 @@ mixin PersonalDataFormController {
     String? value,
     Map<String, dynamic> formData,
   ) =>
-      formData['height'] = int.parse(value!);
+      formData["height"] = int.parse(value!);
 
   String? ageValidator(String? value) {
     if (value == null || value.trim().isEmpty) {
@@ -95,7 +98,7 @@ mixin PersonalDataFormController {
     String? value,
     Map<String, dynamic> formData,
   ) =>
-      formData['age'] = int.parse(value!);
+      formData["age"] = int.parse(value!);
 
   String? genreValidator(Genders? value) {
     if (value != Genders.masculine && value != Genders.feminine) {
@@ -116,25 +119,25 @@ mixin PersonalDataFormController {
     Goals? value,
     Map<String, dynamic> formData,
   ) =>
-      formData['goals'] = value!;
+      formData["goals"] = value!;
 
   void goalOnSaved(
     Goals? value,
     Map<String, dynamic> formData,
   ) =>
-      formData['goals'] = value!;
+      formData["goals"] = value!;
 
   void genderOnChanged(
     Genders? value,
     Map<String, dynamic> formData,
   ) =>
-      formData['gender'] = value!;
+      formData["gender"] = value!;
 
   void genderOnSaved(
     Genders? value,
     Map<String, dynamic> formData,
   ) =>
-      formData['gender'] = value!;
+      formData["gender"] = value!;
 
   String? activityLevelValidator(ActivityLevel? value) {
     if (!ActivityLevel.values.contains(value!)) {
@@ -148,13 +151,13 @@ mixin PersonalDataFormController {
     ActivityLevel? value,
     Map<String, dynamic> formData,
   ) =>
-      formData['activityLevel'] = value!;
+      formData["activityLevel"] = value!;
 
   void activityLevelOnSaved(
     ActivityLevel? value,
     Map<String, dynamic> formData,
   ) =>
-      formData['activityLevel'] = value!;
+      formData["activityLevel"] = value!;
 
   void onSubmit(BuildContext context, Map<String, dynamic> formData) {
     if (!formKey.currentState!.validate()) return;
@@ -162,32 +165,48 @@ mixin PersonalDataFormController {
     formKey.currentState!.save();
 
     dynamic Function(double, int, int) tmbCalc =
-        formData['gender'] == Genders.masculine
+        formData["gender"] == Genders.masculine
             ? TMBCalculator.tmbCalcMac
             : TMBCalculator.tmbCalcFem;
 
-    final tmb = tmbCalc(
-      formData['weight'],
-      formData['height'],
-      formData['age'],
+    double tmb = tmbCalc(
+      formData["weight"] as double,
+      formData["height"] as int,
+      formData["age"] as int,
     );
 
     final dailyCalories = CaloriesCalculator.dailyCalories(
       tmb,
-      (formData['activityLevel'] as ActivityLevel).rate,
+      (formData["activityLevel"] as ActivityLevel).rate,
     );
 
     final caloriesToLoss = CaloriesCalculator.caloriesToLoss(dailyCalories);
     final caloriesToGain = CaloriesCalculator.caloriesToGain(dailyCalories);
 
-    formData['caloriesToLoss'] = caloriesToLoss;
-    formData['caloriesToGain'] = caloriesToGain;
+    formData["caloriesToLoss"] = caloriesToLoss;
+    formData["caloriesToGain"] = caloriesToGain;
 
-    Preferences.savePersonalData(formData.toString()).then(
-      (value) => print(value),
+    formData["activityLevel"] =
+        (formData["activityLevel"] as ActivityLevel).value;
+    formData["gender"] = (formData["gender"] as Genders).value;
+    formData["goals"] = (formData["goals"] as Goals).value;
+
+    final jsonString = jsonEncode(formData);
+
+    Preferences.savePersonalData(jsonString).then(
+      (value) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(value),
+          ),
+        );
+      },
     );
 
-    Navigator.of(context).pop();
+    Navigator.of(context).pushNamedAndRemoveUntil(
+      Routes.home,
+      (route) => false,
+    );
   }
 
   get genres => Genders.values
