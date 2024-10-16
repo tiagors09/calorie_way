@@ -30,6 +30,9 @@ class PersonalDataForm extends StatelessWidget with PersonalDataFormController {
             Container(
               margin: const EdgeInsets.only(bottom: 12),
               child: TextFormField(
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
                 onSaved: (value) => weightOnSave(value, formData),
                 validator: weightValidator,
                 decoration: InputDecoration(
@@ -41,6 +44,9 @@ class PersonalDataForm extends StatelessWidget with PersonalDataFormController {
             Container(
               margin: const EdgeInsets.only(bottom: 12),
               child: TextFormField(
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
                 validator: heightValidator,
                 onSaved: (value) => heightOnSaved(value, formData),
                 decoration: InputDecoration(
@@ -51,6 +57,7 @@ class PersonalDataForm extends StatelessWidget with PersonalDataFormController {
             Container(
               margin: const EdgeInsets.only(bottom: 12),
               child: TextFormField(
+                keyboardType: TextInputType.number,
                 validator: ageValidator,
                 onSaved: (value) => ageOnSaved(value, formData),
                 decoration: InputDecoration(

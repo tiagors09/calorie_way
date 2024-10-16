@@ -15,7 +15,7 @@ abstract class Preferences {
 
       final response = await Future.wait([
         sp.setString('personal_data', data),
-        sp.setString('history', history),
+        sp.setString('history', jsonEncode(history)),
       ]);
 
       if (response[0] && response[1]) {
@@ -39,6 +39,32 @@ abstract class Preferences {
       } else {
         throw Exception('Não há nada a ser exibido');
       }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<String> getHistory() async {
+    try {
+      sp = await SharedPreferences.getInstance();
+
+      final response = sp.getString('history');
+
+      if (response != null) {
+        return response;
+      } else {
+        throw Exception('Não há nada a ser exibido');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<Null> cleanHistory() async {
+    try {
+      sp = await SharedPreferences.getInstance();
+
+      sp.remove('history');
     } catch (e) {
       rethrow;
     }
