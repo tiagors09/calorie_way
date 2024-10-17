@@ -1,4 +1,6 @@
 import 'package:calorie_way/models/personal_data_model.dart';
+import 'package:calorie_way/widgets/calorie_consumption_info.dart';
+import 'package:calorie_way/widgets/info_tile.dart';
 import 'package:flutter/material.dart';
 
 import '../enums/goals.dart';
@@ -13,96 +15,72 @@ class ShowData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
+    final itens = [
+      {
+        "visible": true,
+        "icon": Icons.scale,
+        "label": 'Peso',
+        "value": '${personalData.weight} kg',
+      },
+      {
+        "visible": true,
+        "icon": Icons.straighten,
+        "label": 'Altura',
+        "value": '${personalData.height} cm',
+      },
+      {
+        "visible": true,
+        "icon": Icons.sports_gymnastics,
+        "label": 'Nível de atividade',
+        "value": '${personalData.activityLevel} cm',
+      },
+      {
+        "visible": true,
+        "icon": Icons.cake,
+        "label": 'Idade:',
+        "value": '${personalData.age} anos',
+      },
+      {
+        "visible": true,
+        "icon": personalData.gender == "Masculino" ? Icons.male : Icons.female,
+        "label": 'Gênero:',
+        "value": personalData.gender,
+      },
+      {
+        "visible": true,
+        "icon": Icons.flag,
+        "label": 'Objetivo:',
+        "value": personalData.goals,
+      },
+    ];
 
     return ListView(
       padding: const EdgeInsets.all(24),
       children: [
-        Container(
-          margin: const EdgeInsets.only(bottom: 12),
-          child: Text(
-            'Pra hoje',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: screenWidth * .09,
-              color: Theme.of(context).colorScheme.primaryContainer,
-              fontWeight: FontWeight.bold,
-            ),
+        ...itens.map(
+          (item) => InfoTile(
+            icon: item["icon"] as IconData,
+            label: item["label"] as String,
+            value: item["value"] as String,
+            visible: item["visible"] as bool,
           ),
         ),
-        Container(
-          margin: const EdgeInsets.only(bottom: 12),
-          child: Text(
-            'Seu objetivo é ${personalData.goals}',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: screenWidth * .085,
-              color: Theme.of(context).colorScheme.primaryContainer,
-              fontWeight: FontWeight.w500,
-            ),
+        Visibility(
+          visible: personalData.goals == Goals.weightGain.value,
+          child: CalorieConsumptionInfo(
+            calories: personalData.caloriesToGain.toStringAsFixed(2),
+            goal: Goals.weightGain,
+            goalValue: personalData.goals,
           ),
         ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Visibility(
-              visible: personalData.goals == Goals.weightLoss.value,
-              child: Container(
-                margin: const EdgeInsets.all(24),
-                child: Column(
-                  children: [
-                    Text(
-                      'Calorias a perder',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: screenWidth * .08,
-                        color: Theme.of(context).colorScheme.primaryContainer,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      '${personalData.caloriesToLoss.toStringAsFixed(2)} kcal',
-                      style: TextStyle(
-                        fontSize: screenWidth * .07,
-                        color: Theme.of(context).colorScheme.primaryContainer,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Visibility(
-              visible: personalData.goals == Goals.weightGain.value,
-              child: Container(
-                margin: const EdgeInsets.all(24),
-                child: Column(
-                  children: [
-                    Text(
-                      'Calorias a ganhar',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: screenWidth * .08,
-                        color: Theme.of(context).colorScheme.primaryContainer,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      '${personalData.caloriesToGain.toStringAsFixed(2)} kcal',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: screenWidth * .07,
-                        color: Theme.of(context).colorScheme.primaryContainer,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        )
+        Visibility(
+          visible: personalData.goals == Goals.weightLoss.value,
+          child: CalorieConsumptionInfo(
+            calories: personalData.caloriesToLoss.toStringAsFixed(2),
+            goal: Goals.weightLoss,
+            goalValue: personalData.goals,
+          ),
+        ),
       ],
     );
   }

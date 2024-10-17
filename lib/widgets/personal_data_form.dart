@@ -14,6 +14,32 @@ class PersonalDataForm extends StatelessWidget with PersonalDataFormController {
 
   @override
   Widget build(BuildContext context) {
+    final textInputs = [
+      {
+        "prefixIcon": Icons.scale,
+        "keyboardType": const TextInputType.numberWithOptions(
+          decimal: true,
+        ),
+        "onSaved": (value) => weightOnSave(value, formData),
+        "validator": weightValidator,
+        "label": weightLabel,
+      },
+      {
+        "prefixIcon": Icons.straighten,
+        "keyboardType": const TextInputType.numberWithOptions(decimal: true),
+        "validator": heightValidator,
+        "onSaved": (value) => heightOnSaved(value, formData),
+        "label": heightLabel,
+      },
+      {
+        "prefixIcon": Icons.cake,
+        "keyboardType": TextInputType.number,
+        "validator": ageValidator,
+        "onSaved": (value) => ageOnSaved(value, formData),
+        "label": ageLabel,
+      },
+    ];
+
     return Scaffold(
       bottomNavigationBar: Container(
         margin: const EdgeInsets.all(24),
@@ -27,47 +53,24 @@ class PersonalDataForm extends StatelessWidget with PersonalDataFormController {
         child: ListView(
           padding: const EdgeInsets.all(24),
           children: [
-            Container(
-              margin: const EdgeInsets.only(bottom: 12),
-              child: TextFormField(
-                keyboardType: const TextInputType.numberWithOptions(
-                  decimal: true,
-                ),
-                onSaved: (value) => weightOnSave(value, formData),
-                validator: weightValidator,
-                decoration: InputDecoration(
-                  label: Text(weightLabel),
-                  hoverColor: Colors.transparent,
-                ),
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(bottom: 12),
-              child: TextFormField(
-                keyboardType: const TextInputType.numberWithOptions(
-                  decimal: true,
-                ),
-                validator: heightValidator,
-                onSaved: (value) => heightOnSaved(value, formData),
-                decoration: InputDecoration(
-                  label: Text(heightLabel),
-                ),
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(bottom: 12),
-              child: TextFormField(
-                keyboardType: TextInputType.number,
-                validator: ageValidator,
-                onSaved: (value) => ageOnSaved(value, formData),
-                decoration: InputDecoration(
-                  label: Text(ageLabel),
+            ...textInputs.map(
+              (input) => Container(
+                margin: const EdgeInsets.only(bottom: 12),
+                child: TextFormField(
+                  keyboardType: input["keyboardType"] as TextInputType,
+                  onSaved: input["onSaved"] as void Function(String?)?,
+                  validator: input["validator"] as String? Function(String?)?,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(input["prefixIcon"] as IconData),
+                    label: Text(input["label"] as String),
+                  ),
                 ),
               ),
             ),
             Container(
               margin: const EdgeInsets.only(bottom: 12),
               child: CalorieWayDropdownMenu<Genders>(
+                prefixIcon: Icons.wc,
                 title: genderLabel,
                 items: genres,
                 validator: genreValidator,
@@ -79,6 +82,7 @@ class PersonalDataForm extends StatelessWidget with PersonalDataFormController {
             Container(
               margin: const EdgeInsets.only(bottom: 12),
               child: CalorieWayDropdownMenu<ActivityLevel>(
+                prefixIcon: Icons.sports_gymnastics,
                 title: activityLabel,
                 items: activitiyLevels,
                 validator: activityLevelValidator,
@@ -93,6 +97,7 @@ class PersonalDataForm extends StatelessWidget with PersonalDataFormController {
             Container(
               margin: const EdgeInsets.only(bottom: 12),
               child: CalorieWayDropdownMenu<Goals>(
+                prefixIcon: Icons.flag,
                 title: goalsLabel,
                 items: goals,
                 validator: goalValidator,

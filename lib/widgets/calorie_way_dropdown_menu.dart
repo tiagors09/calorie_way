@@ -7,6 +7,7 @@ class CalorieWayDropdownMenu<T> extends StatelessWidget {
   final void Function(T?)? onSaved;
   final T? initalValue;
   final void Function(T?)? onChanged;
+  final IconData prefixIcon;
 
   const CalorieWayDropdownMenu({
     super.key,
@@ -16,12 +17,14 @@ class CalorieWayDropdownMenu<T> extends StatelessWidget {
     required this.onSaved,
     required this.initalValue,
     required this.onChanged,
+    required this.prefixIcon,
   });
 
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<T>(
       decoration: InputDecoration(
+        prefixIcon: Icon(prefixIcon),
         label: Text(
           title,
         ),

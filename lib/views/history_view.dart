@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:calorie_way/service/preferences.dart';
+import 'package:calorie_way/widgets/info_tile.dart';
+import 'package:calorie_way/widgets/show_error.dart';
 import 'package:flutter/material.dart';
 
 import '../enums/goals.dart';
@@ -14,8 +16,6 @@ class HistoryView extends StatefulWidget {
 class _HistoryViewState extends State<HistoryView> {
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(color: Theme.of(context).colorScheme.onPrimary),
@@ -40,30 +40,72 @@ class _HistoryViewState extends State<HistoryView> {
           if (snp.connectionState == ConnectionState.done) {
             if (snp.hasData) {
               final history = jsonDecode(snp.data!);
+
+              final itens = [
+                {
+                  "visible": true,
+                  "icon": Icons.calendar_month,
+                  "label": 'Data da última checagem',
+                  "value": history["date"],
+                },
+                {
+                  "visible": true,
+                  "icon": Icons.scale,
+                  "label": 'Peso',
+                  "value": '${history["weight"]} kg',
+                },
+                {
+                  "visible": true,
+                  "icon": Icons.straighten,
+                  "label": 'Altura',
+                  "value": '${history["height"]} cm',
+                },
+                {
+                  "visible": true,
+                  "icon": Icons.cake,
+                  "label": 'Idade:',
+                  "value": '${history["age"]} anos',
+                },
+                {
+                  "visible": true,
+                  "icon": Icons.wc,
+                  "label": 'Gênero:',
+                  "value": history["gender"],
+                },
+                {
+                  "visible": true,
+                  "icon": Icons.sports_gymnastics,
+                  "label": 'Objetivo:',
+                  "value": history["goals"],
+                },
+                {
+                  "visible": history["goals"] == Goals.weightLoss.value,
+                  "icon": Icons.local_fire_department,
+                  "label": 'Calorias a perder:',
+                  "value":
+                      (history["caloriesToLoss"] as double).toStringAsFixed(2),
+                },
+                {
+                  "visible": history["goals"] == Goals.weightGain.value,
+                  "icon": Icons.local_fire_department,
+                  "label": 'Calorias a ganhar:',
+                  "value":
+                      (history["caloriesToGain"] as double).toStringAsFixed(2),
+                },
+              ];
+
               return ListView(
                 padding: const EdgeInsets.all(24),
-                children: [
-                  _buildInfoTile('Data da última checagem:', history["date"]),
-                  _buildInfoTile('Peso:', '${history["weight"]} kg'),
-                  _buildInfoTile('Altura:', '${history["height"]} cm'),
-                  _buildInfoTile('Idade:', '${history["age"]} anos'),
-                  _buildInfoTile('Gênero:', history["gender"]),
-                  _buildInfoTile('Objetivo:', history["goals"]),
-                  Visibility(
-                    visible: history["goals"] == Goals.weightLoss.value,
-                    child: _buildInfoTile(
-                      'Calorias a perder:',
-                      (history["caloriesToLoss"] as double).toStringAsFixed(2),
-                    ),
-                  ),
-                  Visibility(
-                    visible: history["goals"] == Goals.weightGain.value,
-                    child: _buildInfoTile(
-                      'Calorias a ganhar:',
-                      (history["caloriesToGain"] as double).toStringAsFixed(2),
-                    ),
-                  ),
-                ],
+                children: itens
+                    .map(
+                      (item) => InfoTile(
+                        icon: item["icon"],
+                        label: item['label'],
+                        value: item["value"],
+                        visible: item["visible"],
+                      ),
+                    )
+                    .toList(),
               );
             } else {
               return Center(
@@ -71,8 +113,8 @@ class _HistoryViewState extends State<HistoryView> {
                   'Nenhum dado encontrado.',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: screenWidth * .06,
-                    color: Theme.of(context).colorScheme.primaryContainer,
+                    fontSize: 32,
+                    color: Theme.of(context).colorScheme.onSurface,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -81,42 +123,13 @@ class _HistoryViewState extends State<HistoryView> {
           }
 
           if (snp.hasError) {
-            return Center(
-              child: Text(
-                snp.error.toString().replaceFirst('Exception:', ''),
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: screenWidth * .06,
-                  color: Theme.of(context).colorScheme.primaryContainer,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+            return ShowError(
+              error: snp.error.toString(),
             );
           }
 
           return const Center(child: CircularProgressIndicator());
         },
-      ),
-    );
-  }
-
-  Widget _buildInfoTile(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            label,
-            style: TextStyle(
-                color: Theme.of(context).colorScheme.primary, fontSize: 16),
-          ),
-          Text(
-            value,
-            style: TextStyle(
-                color: Theme.of(context).colorScheme.primary, fontSize: 16),
-          ),
-        ],
       ),
     );
   }

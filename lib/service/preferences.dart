@@ -37,7 +37,7 @@ abstract class Preferences {
       if (response != null) {
         return response;
       } else {
-        throw Exception('Não há nada a ser exibido');
+        throw Exception('Adicione seus dados para começar!');
       }
     } catch (e) {
       rethrow;

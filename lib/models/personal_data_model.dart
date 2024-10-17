@@ -4,6 +4,7 @@ class PersonalDataModel {
   final double weight;
   final String activityLevel;
   final String goals;
+  final String gender;
   final double caloriesToLoss;
   final double caloriesToGain;
 
@@ -13,6 +14,7 @@ class PersonalDataModel {
     required this.weight,
     required this.activityLevel,
     required this.goals,
+    required this.gender,
     required this.caloriesToLoss,
     required this.caloriesToGain,
   });
@@ -23,6 +25,7 @@ class PersonalDataModel {
         weight = data["weight"],
         activityLevel = data["activityLevel"],
         goals = data["goals"],
+        gender = data["gender"],
         caloriesToLoss = data["caloriesToLoss"],
         caloriesToGain = data["caloriesToGain"];
 
@@ -33,6 +36,7 @@ class PersonalDataModel {
       "weight": weight,
       "activityLevel": activityLevel,
       "goals": goals,
+      "gender": gender,
       "caloriesToLoss": caloriesToLoss,
       "caloriesToGain": caloriesToGain,
     };
