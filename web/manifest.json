@@ -1,11 +1,11 @@
 {
-    "name": "calorie_way",
-    "short_name": "calorie_way",
+    "name": "CalorieWay",
+    "short_name": "CalorieWay",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Um aplicativo para ajudar os usuários a calcular a ingestão diária recomendada de calorias com base no seu perfil físico e objetivos de peso.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

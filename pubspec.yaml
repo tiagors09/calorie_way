@@ -100,7 +100,7 @@ flutter_native_splash:
   
   branding: assets/images/ic_branding.png
   branding_mode: bottom
-  branding_bottom_padding: 50
+  branding_bottom_padding: 24
 
   android_12:
     image: assets/images/ic_launcher.png
