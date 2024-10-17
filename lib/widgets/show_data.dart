@@ -32,7 +32,7 @@ class ShowData extends StatelessWidget {
         "visible": true,
         "icon": Icons.sports_gymnastics,
         "label": 'Nível de atividade',
-        "value": '${personalData.activityLevel} cm',
+        "value": personalData.activityLevel,
       },
       {
         "visible": true,
