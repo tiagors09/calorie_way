@@ -1,6 +1,8 @@
 import 'package:calorie_way/models/personal_data_model.dart';
 import 'package:flutter/material.dart';
 
+import '../enums/goals.dart';
+
 class ShowData extends StatelessWidget {
   final PersonalDataModel personalData;
 
@@ -28,57 +30,75 @@ class ShowData extends StatelessWidget {
             ),
           ),
         ),
+        Container(
+          margin: const EdgeInsets.only(bottom: 12),
+          child: Text(
+            'Seu objetivo é ${personalData.goals}',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: screenWidth * .085,
+              color: Theme.of(context).colorScheme.primaryContainer,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              margin: const EdgeInsets.all(24),
-              child: Column(
-                children: [
-                  Text(
-                    'Calorias a perder',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: screenWidth * .08,
-                      color: Theme.of(context).colorScheme.primaryContainer,
-                      fontWeight: FontWeight.bold,
+            Visibility(
+              visible: personalData.goals == Goals.weightLoss.value,
+              child: Container(
+                margin: const EdgeInsets.all(24),
+                child: Column(
+                  children: [
+                    Text(
+                      'Calorias a perder',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: screenWidth * .08,
+                        color: Theme.of(context).colorScheme.primaryContainer,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  Text(
-                    '${personalData.caloriesToLoss.toStringAsFixed(2)} kcal',
-                    style: TextStyle(
-                      fontSize: screenWidth * .07,
-                      color: Theme.of(context).colorScheme.primaryContainer,
-                      fontWeight: FontWeight.w600,
+                    Text(
+                      '${personalData.caloriesToLoss.toStringAsFixed(2)} kcal',
+                      style: TextStyle(
+                        fontSize: screenWidth * .07,
+                        color: Theme.of(context).colorScheme.primaryContainer,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-            Container(
-              margin: const EdgeInsets.all(24),
-              child: Column(
-                children: [
-                  Text(
-                    'Calorias a ganhar',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: screenWidth * .08,
-                      color: Theme.of(context).colorScheme.primaryContainer,
-                      fontWeight: FontWeight.bold,
+            Visibility(
+              visible: personalData.goals == Goals.weightGain.value,
+              child: Container(
+                margin: const EdgeInsets.all(24),
+                child: Column(
+                  children: [
+                    Text(
+                      'Calorias a ganhar',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: screenWidth * .08,
+                        color: Theme.of(context).colorScheme.primaryContainer,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  Text(
-                    '${personalData.caloriesToGain.toStringAsFixed(2)} kcal',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: screenWidth * .07,
-                      color: Theme.of(context).colorScheme.primaryContainer,
-                      fontWeight: FontWeight.w600,
+                    Text(
+                      '${personalData.caloriesToGain.toStringAsFixed(2)} kcal',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: screenWidth * .07,
+                        color: Theme.of(context).colorScheme.primaryContainer,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],
