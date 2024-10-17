@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:calorie_way/service/preferences.dart';
 import 'package:flutter/material.dart';
 
+import '../enums/goals.dart';
+
 class HistoryView extends StatefulWidget {
   const HistoryView({super.key});
 
@@ -47,10 +49,20 @@ class _HistoryViewState extends State<HistoryView> {
                   _buildInfoTile('Idade:', '${history["age"]} anos'),
                   _buildInfoTile('Gênero:', history["gender"]),
                   _buildInfoTile('Objetivo:', history["goals"]),
-                  _buildInfoTile(
-                      'Calorias a perder:', '${history["caloriesToLoss"]}'),
-                  _buildInfoTile(
-                      'Calorias a ganhar:', '${history["caloriesToGain"]}'),
+                  Visibility(
+                    visible: history["goals"] == Goals.weightLoss.value,
+                    child: _buildInfoTile(
+                      'Calorias a perder:',
+                      (history["caloriesToLoss"] as double).toStringAsFixed(2),
+                    ),
+                  ),
+                  Visibility(
+                    visible: history["goals"] == Goals.weightGain.value,
+                    child: _buildInfoTile(
+                      'Calorias a ganhar:',
+                      (history["caloriesToGain"] as double).toStringAsFixed(2),
+                    ),
+                  ),
                 ],
               );
             } else {
