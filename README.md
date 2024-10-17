@@ -63,10 +63,6 @@ Certifique-se de ter os seguintes itens instalados:
 
 ![6](.misc/6.png)
 
-![7](.misc/7.png)
-
-![gif](.misc/demo.gif)
-
 ---
 
 Desenvolvido com ❤️ por tiagors09 usando Flutter.
